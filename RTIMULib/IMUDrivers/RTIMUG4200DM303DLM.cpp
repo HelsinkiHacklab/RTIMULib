@@ -22,23 +22,23 @@
 //  SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
-#include "RTIMUGD20HM303D.h"
+#include "RTIMUG4200DM303DLM.h"
 #include "RTIMUSettings.h"
 
 //  this sets the learning rate for compass running average calculation
 
 #define COMPASS_ALPHA 0.2f
 
-RTIMUGD20HM303D::RTIMUGD20HM303D(RTIMUSettings *settings) : RTIMU(settings)
+RTIMUG4200DM303DLM::RTIMUG4200DM303DLM(RTIMUSettings *settings) : RTIMU(settings)
 {
     m_sampleRate = 100;
 }
 
-RTIMUGD20HM303D::~RTIMUGD20HM303D()
+RTIMUG4200DM303DLM::~RTIMUG4200DM303DLM()
 {
 }
 
-bool RTIMUGD20HM303D::IMUInit()
+bool RTIMUG4200DM303DLM::IMUInit()
 {
     unsigned char result;
 
@@ -145,7 +145,7 @@ bool RTIMUGD20HM303D::IMUInit()
     return true;
 }
 
-bool RTIMUGD20HM303D::setGyroSampleRate()
+bool RTIMUG4200DM303DLM::setGyroSampleRate()
 {
     unsigned char ctrl1;
     unsigned char lowOdr = 0;
@@ -221,7 +221,7 @@ bool RTIMUGD20HM303D::setGyroSampleRate()
     return (m_settings->HALWrite(m_gyroSlaveAddr, L3GD20H_CTRL1, ctrl1, "Failed to set L3GD20H CTRL1"));
 }
 
-bool RTIMUGD20HM303D::setGyroCTRL2()
+bool RTIMUG4200DM303DLM::setGyroCTRL2()
 {
     if ((m_settings->m_GD20HM303DGyroHpf < L3GD20H_HPF_0) || (m_settings->m_GD20HM303DGyroHpf > L3GD20H_HPF_9)) {
         HAL_ERROR1("Illegal L3GD20H high pass filter code %d\n", m_settings->m_GD20HM303DGyroHpf);
@@ -230,7 +230,7 @@ bool RTIMUGD20HM303D::setGyroCTRL2()
     return m_settings->HALWrite(m_gyroSlaveAddr,  L3GD20H_CTRL2, m_settings->m_GD20HM303DGyroHpf, "Failed to set L3GD20H CTRL2");
 }
 
-bool RTIMUGD20HM303D::setGyroCTRL4()
+bool RTIMUG4200DM303DLM::setGyroCTRL4()
 {
     unsigned char ctrl4;
 
@@ -259,7 +259,7 @@ bool RTIMUGD20HM303D::setGyroCTRL4()
 }
 
 
-bool RTIMUGD20HM303D::setGyroCTRL5()
+bool RTIMUG4200DM303DLM::setGyroCTRL5()
 {
     unsigned char ctrl5;
 
@@ -277,7 +277,7 @@ bool RTIMUGD20HM303D::setGyroCTRL5()
 }
 
 
-bool RTIMUGD20HM303D::setAccelCTRL1()
+bool RTIMUG4200DM303DLM::setAccelCTRL1()
 {
     unsigned char ctrl1;
 
@@ -291,7 +291,7 @@ bool RTIMUGD20HM303D::setAccelCTRL1()
     return m_settings->HALWrite(m_accelCompassSlaveAddr,  LSM303D_CTRL1, ctrl1, "Failed to set LSM303D CTRL1");
 }
 
-bool RTIMUGD20HM303D::setAccelCTRL2()
+bool RTIMUG4200DM303DLM::setAccelCTRL2()
 {
     unsigned char ctrl2;
 
@@ -332,7 +332,7 @@ bool RTIMUGD20HM303D::setAccelCTRL2()
 }
 
 
-bool RTIMUGD20HM303D::setCompassCTRL5()
+bool RTIMUG4200DM303DLM::setCompassCTRL5()
 {
     unsigned char ctrl5;
 
@@ -352,7 +352,7 @@ bool RTIMUGD20HM303D::setCompassCTRL5()
     return m_settings->HALWrite(m_accelCompassSlaveAddr,  LSM303D_CTRL5, ctrl5, "Failed to set LSM303D CTRL5");
 }
 
-bool RTIMUGD20HM303D::setCompassCTRL6()
+bool RTIMUG4200DM303DLM::setCompassCTRL6()
 {
     unsigned char ctrl6;
 
@@ -387,18 +387,18 @@ bool RTIMUGD20HM303D::setCompassCTRL6()
     return m_settings->HALWrite(m_accelCompassSlaveAddr,  LSM303D_CTRL6, ctrl6, "Failed to set LSM303D CTRL6");
 }
 
-bool RTIMUGD20HM303D::setCompassCTRL7()
+bool RTIMUG4200DM303DLM::setCompassCTRL7()
 {
      return m_settings->HALWrite(m_accelCompassSlaveAddr,  LSM303D_CTRL7, 0x60, "Failed to set LSM303D CTRL7");
 }
 
 
-int RTIMUGD20HM303D::IMUGetPollInterval()
+int RTIMUG4200DM303DLM::IMUGetPollInterval()
 {
     return (400 / m_sampleRate);
 }
 
-bool RTIMUGD20HM303D::IMURead()
+bool RTIMUG4200DM303DLM::IMURead()
 {
     unsigned char status;
     unsigned char gyroData[6];

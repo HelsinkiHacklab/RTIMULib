@@ -22,8 +22,8 @@
 //  SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
-#ifndef _RTIMUGD20HM303D_H
-#define	_RTIMUGD20HM303D_H
+#ifndef _RTIMUG4200DM303DLM_H
+#define	_RTIMUG4200DM303DLM_H
 
 #include "RTIMU.h"
 
@@ -51,14 +51,14 @@ typedef struct
 
 #endif
 
-class RTIMUGD20HM303D : public RTIMU
+class RTIMUG4200DM303DLM : public RTIMU
 {
 public:
-    RTIMUGD20HM303D(RTIMUSettings *settings);
-    ~RTIMUGD20HM303D();
+    RTIMUG4200DM303DLM(RTIMUSettings *settings);
+    ~RTIMUG4200DM303DLM();
 
-    virtual const char *IMUName() { return "L3GD20H + LSM303D"; }
-    virtual int IMUType() { return RTIMU_TYPE_GD20HM303D; }
+    virtual const char *IMUName() { return "L3G4200D + LSM303DLM"; }
+    virtual int IMUType() { return RTIMU_TYPE_RTIMUG4200DM303DLM; }
     virtual bool IMUInit();
     virtual int IMUGetPollInterval();
     virtual bool IMURead();
@@ -92,4 +92,4 @@ private:
 #endif
 };
 
-#endif // _RTIMUGD20HM303D_H
+#endif // _RTIMUG4200DM303DLM_H
