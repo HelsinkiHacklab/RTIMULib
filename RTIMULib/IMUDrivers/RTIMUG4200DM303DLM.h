@@ -29,25 +29,25 @@
 
 //  Define this symbol to use cache mode
 
-//#define GD20HM303D_CACHE_MODE   // not reliable at the moment
+//#define G4200DM303DLM_CACHE_MODE   // not reliable at the moment
 
-#ifdef GD20HM303D_CACHE_MODE
+#ifdef G4200DM303DLM_CACHE_MODE
 
 //  Cache defs
 
-#define GD20HM303D_FIFO_CHUNK_SIZE    6                       // 6 bytes of gyro data
-#define GD20HM303D_FIFO_THRESH        16                      // threshold point in fifo
-#define GD20HM303D_CACHE_BLOCK_COUNT  16                      // number of cache blocks
+#define G4200DM303DLM_FIFO_CHUNK_SIZE    6                       // 6 bytes of gyro data
+#define G4200DM303DLM_FIFO_THRESH        16                      // threshold point in fifo
+#define G4200DM303DLM_CACHE_BLOCK_COUNT  16                      // number of cache blocks
 
 typedef struct
 {
-    unsigned char data[GD20HM303D_FIFO_THRESH * GD20HM303D_FIFO_CHUNK_SIZE];
+    unsigned char data[G4200DM303DLM_FIFO_THRESH * G4200DM303DLM_FIFO_CHUNK_SIZE];
     int count;                                              // number of chunks in the cache block
     int index;                                              // current index into the cache
     unsigned char accel[6];                                 // the raw accel readings for the block
     unsigned char compass[6];                               // the raw compass readings for the block
 
-} GD20HM303D_CACHE_BLOCK;
+} G4200DM303DLM_CACHE_BLOCK;
 
 #endif
 
@@ -81,10 +81,10 @@ private:
     RTFLOAT m_accelScale;
     RTFLOAT m_compassScale;
 
-#ifdef GD20HM303D_CACHE_MODE
+#ifdef G4200DM303DLM_CACHE_MODE
     bool m_firstTime;                                       // if first sample
 
-    GD20HM303D_CACHE_BLOCK m_cache[GD20HM303D_CACHE_BLOCK_COUNT]; // the cache itself
+    G4200DM303DLM_CACHE_BLOCK m_cache[G4200DM303DLM_CACHE_BLOCK_COUNT]; // the cache itself
     int m_cacheIn;                                          // the in index
     int m_cacheOut;                                         // the out index
     int m_cacheCount;                                       // number of used cache blocks
