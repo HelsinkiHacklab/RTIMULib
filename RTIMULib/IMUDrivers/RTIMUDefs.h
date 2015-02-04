@@ -373,6 +373,79 @@
 
 //----------------------------------------------------------
 //
+//  L3G4200D
+
+//  I2C Slave Addresses
+
+#define L3G4200D_ADDRESS0             0x68 //diff from DG20
+#define L3G4200D_ADDRESS1             0x69 //
+#define L3G4200D_ID                   0xd4
+
+//  L3GD20 Register map
+
+#define L3G4200D_WHO_AM_I        0x0f
+#define L3G4200D_CTRL1           0x20
+#define L3G4200D_CTRL2           0x21
+#define L3G4200D_CTRL3           0x22
+#define L3G4200D_CTRL4           0x23
+#define L3G4200D_CTRL5           0x24
+#define L3G4200D_OUT_TEMP        0x26
+#define L3G4200D_STATUS          0x27
+#define L3G4200D_OUT_X_L         0x28
+#define L3G4200D_OUT_X_H         0x29
+#define L3G4200D_OUT_Y_L         0x2a
+#define L3G4200D_OUT_Y_H         0x2b
+#define L3G4200D_OUT_Z_L         0x2c
+#define L3G4200D_OUT_Z_H         0x2d
+#define L3G4200D_FIFO_CTRL       0x2e
+#define L3G4200D_FIFO_SRC        0x2f
+#define L3G4200D_IG_CFG          0x30
+#define L3G4200D_IG_SRC          0x31
+#define L3G4200D_IG_THS_XH       0x32
+#define L3G4200D_IG_THS_XL       0x33
+#define L3G4200D_IG_THS_YH       0x34
+#define L3G4200D_IG_THS_YL       0x35
+#define L3G4200D_IG_THS_ZH       0x36
+#define L3G4200D_IG_THS_ZL       0x37
+#define L3G4200D_IG_DURATION     0x38
+
+//  Gyro sample rate defines
+
+#define L3G4200D_SAMPLERATE_100  0 //diff from DG20
+#define L3G4200D_SAMPLERATE_200  1 //
+#define L3G4200D_SAMPLERATE_400  2 //
+#define L3G4200D_SAMPLERATE_800  3 //
+
+//  Gyro banwidth defines
+
+#define L3G4200D_BANDWIDTH_0     0
+#define L3G4200D_BANDWIDTH_1     1
+#define L3G4200D_BANDWIDTH_2     2
+#define L3G4200D_BANDWIDTH_3     3
+
+//  Gyro FSR defines
+
+#define L3G4200D_FSR_250         0
+#define L3G4200D_FSR_500         1
+#define L3G4200D_FSR_2000        2
+
+//  Gyro high pass filter defines
+
+#define L3G4200D_HPF_0           0	//these will result in slightly different values than DG20
+#define L3G4200D_HPF_1           1
+#define L3G4200D_HPF_2           2
+#define L3G4200D_HPF_3           3
+#define L3G4200D_HPF_4           4
+#define L3G4200D_HPF_5           5
+#define L3G4200D_HPF_6           6
+#define L3G4200D_HPF_7           7
+#define L3G4200D_HPF_8           8
+#define L3G4200D_HPF_9           9
+
+
+
+//----------------------------------------------------------
+//
 //  LSM303D
 
 #define LSM303D_ADDRESS0        0x1e
