@@ -80,17 +80,18 @@ bool RTIMUG4200DM303DLM::IMUInit()
 
     //  Set up the gyro
 
-    if (!m_settings->HALWrite(m_gyroSlaveAddr, L3GD20H_LOW_ODR, 0x04, "Failed to reset L3GD20H"))
+	//does not apply to L3G2400D
+    //if (!m_settings->HALWrite(m_gyroSlaveAddr, L3GD20H_LOW_ODR, 0x04, "Failed to reset L3GD20H"))
+    //    return false;
+
+    if (!m_settings->HALWrite(m_gyroSlaveAddr, L3G4200D_CTRL5, 0x80, "Failed to boot L3G4200D"))
         return false;
 
-    if (!m_settings->HALWrite(m_gyroSlaveAddr, L3GD20H_CTRL5, 0x80, "Failed to boot L3GD20H"))
+    if (!m_settings->HALRead(m_gyroSlaveAddr, L3G4200D_WHO_AM_I, 1, &result, "Failed to read L3G4200D id"))
         return false;
 
-    if (!m_settings->HALRead(m_gyroSlaveAddr, L3GD20H_WHO_AM_I, 1, &result, "Failed to read L3GD20H id"))
-        return false;
-
-    if (result != L3GD20H_ID) {
-        HAL_ERROR1("Incorrect L3GD20H id %d\n", result);
+    if (result != L3G4200D_ID) {
+        HAL_ERROR1("Incorrect L3G4200D id %d\n", result);
         return false;
     }
 
@@ -132,7 +133,7 @@ bool RTIMUG4200DM303DLM::IMUInit()
 
     //  turn on gyro fifo
 
-    if (!m_settings->HALWrite(m_gyroSlaveAddr, L3GD20H_FIFO_CTRL, 0x3f, "Failed to set L3GD20H FIFO mode"))
+    if (!m_settings->HALWrite(m_gyroSlaveAddr, L3G4200D_FIFO_CTRL, 0x3f, "Failed to set L3G4200D FIFO mode"))
         return false;
 #endif
 
@@ -151,83 +152,66 @@ bool RTIMUG4200DM303DLM::setGyroSampleRate()
     unsigned char lowOdr = 0;
 
     switch (m_settings->m_G4200DM303DLMGyroSampleRate) {
-    case L3GD20H_SAMPLERATE_12_5:
-        ctrl1 = 0x0f;
-        lowOdr = 1;
-        m_sampleRate = 13;
-        break;
-
-    case L3GD20H_SAMPLERATE_25:
-        ctrl1 = 0x4f;
-        lowOdr = 1;
-        m_sampleRate = 25;
-        break;
-
-    case L3GD20H_SAMPLERATE_50:
-        ctrl1 = 0x8f;
-        lowOdr = 1;
-        m_sampleRate = 50;
-        break;
-
-    case L3GD20H_SAMPLERATE_100:
+    case L3G4200D_SAMPLERATE_100:
         ctrl1 = 0x0f;
         m_sampleRate = 100;
         break;
 
-    case L3GD20H_SAMPLERATE_200:
+    case L3G4200D_SAMPLERATE_200:
         ctrl1 = 0x4f;
         m_sampleRate = 200;
         break;
 
-    case L3GD20H_SAMPLERATE_400:
+    case L3G4200D_SAMPLERATE_400:
         ctrl1 = 0x8f;
         m_sampleRate = 400;
         break;
 
-    case L3GD20H_SAMPLERATE_800:
+    case L3G4200D_SAMPLERATE_800:
         ctrl1 = 0xcf;
         m_sampleRate = 800;
         break;
 
     default:
-        HAL_ERROR1("Illegal L3GD20H sample rate code %d\n", m_settings->m_G4200DM303DLMGyroSampleRate);
+        HAL_ERROR1("Illegal L3G4200D sample rate code %d\n", m_settings->m_G4200DM303DLMGyroSampleRate);
         return false;
     }
 
     m_sampleInterval = (uint64_t)1000000 / m_sampleRate;
 
     switch (m_settings->m_G4200DM303DLMGyroBW) {
-    case L3GD20H_BANDWIDTH_0:
+    case L3G4200D_BANDWIDTH_0:
         ctrl1 |= 0x00;
         break;
 
-    case L3GD20H_BANDWIDTH_1:
+    case L3G4200D_BANDWIDTH_1:
         ctrl1 |= 0x10;
         break;
 
-    case L3GD20H_BANDWIDTH_2:
+    case L3G4200D_BANDWIDTH_2:
         ctrl1 |= 0x20;
         break;
 
-    case L3GD20H_BANDWIDTH_3:
+    case L3G4200D_BANDWIDTH_3:
         ctrl1 |= 0x30;
         break;
 
     }
 
-    if (!m_settings->HALWrite(m_gyroSlaveAddr, L3GD20H_LOW_ODR, lowOdr, "Failed to set L3GD20H LOW_ODR"))
-        return false;
+	//does not apply for L3G4200D
+    //if (!m_settings->HALWrite(m_gyroSlaveAddr, L3GD20H_LOW_ODR, lowOdr, "Failed to set L3G4200D LOW_ODR"))
+    //    return false;
 
-    return (m_settings->HALWrite(m_gyroSlaveAddr, L3GD20H_CTRL1, ctrl1, "Failed to set L3GD20H CTRL1"));
+    return (m_settings->HALWrite(m_gyroSlaveAddr, L3G4200D_CTRL1, ctrl1, "Failed to set L3G4200D CTRL1"));
 }
 
 bool RTIMUG4200DM303DLM::setGyroCTRL2()
 {
-    if ((m_settings->m_G4200DM303DLMGyroHpf < L3GD20H_HPF_0) || (m_settings->m_G4200DM303DLMGyroHpf > L3GD20H_HPF_9)) {
-        HAL_ERROR1("Illegal L3GD20H high pass filter code %d\n", m_settings->m_G4200DM303DLMGyroHpf);
+    if ((m_settings->m_G4200DM303DLMGyroHpf < L3G4200D_HPF_0) || (m_settings->m_G4200DM303DLMGyroHpf > L3G4200D_HPF_9)) {
+        HAL_ERROR1("Illegal L3G4200D high pass filter code %d\n", m_settings->m_G4200DM303DLMGyroHpf);
         return false;
     }
-    return m_settings->HALWrite(m_gyroSlaveAddr,  L3GD20H_CTRL2, m_settings->m_G4200DM303DLMGyroHpf, "Failed to set L3GD20H CTRL2");
+    return m_settings->HALWrite(m_gyroSlaveAddr,  L3G4200D_CTRL2, m_settings->m_G4200DM303DLMGyroHpf, "Failed to set L3G4200D CTRL2");
 }
 
 bool RTIMUG4200DM303DLM::setGyroCTRL4()
@@ -235,27 +219,27 @@ bool RTIMUG4200DM303DLM::setGyroCTRL4()
     unsigned char ctrl4;
 
     switch (m_settings->m_G4200DM303DLMGyroFsr) {
-    case L3GD20H_FSR_245:
+    case L3G4200D_FSR_250:
         ctrl4 = 0x00;
         m_gyroScale = (RTFLOAT)0.00875 * RTMATH_DEGREE_TO_RAD;
         break;
 
-    case L3GD20H_FSR_500:
+    case L3G4200D_FSR_500:
         ctrl4 = 0x10;
         m_gyroScale = (RTFLOAT)0.0175 * RTMATH_DEGREE_TO_RAD;
         break;
 
-    case L3GD20H_FSR_2000:
+    case L3G4200D_FSR_2000:
         ctrl4 = 0x20;
         m_gyroScale = (RTFLOAT)0.07 * RTMATH_DEGREE_TO_RAD;
         break;
 
     default:
-        HAL_ERROR1("Illegal L3GD20H FSR code %d\n", m_settings->m_G4200DM303DLMGyroFsr);
+        HAL_ERROR1("Illegal L3G4200D FSR code %d\n", m_settings->m_G4200DM303DLMGyroFsr);
         return false;
     }
 
-    return m_settings->HALWrite(m_gyroSlaveAddr,  L3GD20H_CTRL4, ctrl4, "Failed to set L3GD20H CTRL4");
+    return m_settings->HALWrite(m_gyroSlaveAddr,  L3G4200D_CTRL4, ctrl4, "Failed to set L3G4200D CTRL4");
 }
 
 
@@ -273,7 +257,7 @@ bool RTIMUG4200DM303DLM::setGyroCTRL5()
     ctrl5 |= 0x40;
 #endif
 
-    return m_settings->HALWrite(m_gyroSlaveAddr,  L3GD20H_CTRL5, ctrl5, "Failed to set L3GD20H CTRL5");
+    return m_settings->HALWrite(m_gyroSlaveAddr,  L3G4200D_CTRL5, ctrl5, "Failed to set L3G4200D CTRL5");
 }
 
 
@@ -409,18 +393,18 @@ bool RTIMUG4200DM303DLM::IMURead()
 #ifdef G4200DM303DLM_CACHE_MODE
     int count;
 
-    if (!m_settings->HALRead(m_gyroSlaveAddr, L3GD20H_FIFO_SRC, 1, &status, "Failed to read L3GD20H fifo status"))
+    if (!m_settings->HALRead(m_gyroSlaveAddr, L3G4200D_FIFO_SRC, 1, &status, "Failed to read L3G4200D fifo status"))
         return false;
 
     if ((status & 0x40) != 0) {
-        HAL_INFO("L3GD20H fifo overrun\n");
-        if (!m_settings->HALWrite(m_gyroSlaveAddr, L3GD20H_CTRL5, 0x10, "Failed to set L3GD20H CTRL5"))
+        HAL_INFO("L3G4200D fifo overrun\n");
+        if (!m_settings->HALWrite(m_gyroSlaveAddr, L3G4200D_CTRL5, 0x10, "Failed to set L3G4200D CTRL5"))
             return false;
 
-        if (!m_settings->HALWrite(m_gyroSlaveAddr, L3GD20H_FIFO_CTRL, 0x0, "Failed to set L3GD20H FIFO mode"))
+        if (!m_settings->HALWrite(m_gyroSlaveAddr, L3G4200D_FIFO_CTRL, 0x0, "Failed to set L3G4200D FIFO mode"))
             return false;
 
-        if (!m_settings->HALWrite(m_gyroSlaveAddr, L3GD20H_FIFO_CTRL, 0x3f, "Failed to set L3GD20H FIFO mode"))
+        if (!m_settings->HALWrite(m_gyroSlaveAddr, L3G4200D_FIFO_CTRL, 0x3f, "Failed to set L3G4200D FIFO mode"))
             return false;
 
         if (!setGyroCTRL5())
@@ -436,7 +420,7 @@ bool RTIMUG4200DM303DLM::IMURead()
     if ((m_cacheCount == 0) && (count > 0) && (count < G4200DM303DLM_FIFO_THRESH)) {
         // special case of a small fifo and nothing cached - just handle as simple read
 
-        if (!m_settings->HALRead(m_gyroSlaveAddr, 0x80 | L3GD20H_OUT_X_L, 6, gyroData, "Failed to read L3GD20H data"))
+        if (!m_settings->HALRead(m_gyroSlaveAddr, 0x80 | L3G4200D_OUT_X_L, 6, gyroData, "Failed to read L3G4200D data"))
             return false;
 
         if (!m_settings->HALRead(m_accelCompassSlaveAddr, 0x80 | LSM303D_OUT_X_L_A, 6, accelData, "Failed to read LSM303D accel data"))
@@ -463,8 +447,8 @@ bool RTIMUG4200DM303DLM::IMURead()
                 m_cacheCount--;
             }
 
-            if (!m_settings->HALRead(m_gyroSlaveAddr, 0x80 | L3GD20H_OUT_X_L, G4200DM303DLM_FIFO_CHUNK_SIZE * G4200DM303DLM_FIFO_THRESH,
-                         m_cache[m_cacheIn].data, "Failed to read L3GD20H fifo data"))
+            if (!m_settings->HALRead(m_gyroSlaveAddr, 0x80 | L3G4200D_OUT_X_L, G4200DM303DLM_FIFO_CHUNK_SIZE * G4200DM303DLM_FIFO_THRESH,
+                         m_cache[m_cacheIn].data, "Failed to read L3G4200D fifo data"))
                 return false;
 
             if (!m_settings->HALRead(m_accelCompassSlaveAddr, 0x80 | LSM303D_OUT_X_L_A, 6,
@@ -511,13 +495,13 @@ bool RTIMUG4200DM303DLM::IMURead()
     }
 
 #else
-    if (!m_settings->HALRead(m_gyroSlaveAddr, L3GD20H_STATUS, 1, &status, "Failed to read L3GD20H status"))
+    if (!m_settings->HALRead(m_gyroSlaveAddr, L3G4200D_STATUS, 1, &status, "Failed to read L3G4200D status"))
         return false;
 
     if ((status & 0x8) == 0)
         return false;
 
-    if (!m_settings->HALRead(m_gyroSlaveAddr, 0x80 | L3GD20H_OUT_X_L, 6, gyroData, "Failed to read L3GD20H data"))
+    if (!m_settings->HALRead(m_gyroSlaveAddr, 0x80 | L3G4200D_OUT_X_L, 6, gyroData, "Failed to read L3G4200D data"))
         return false;
 
     m_imuData.timestamp = RTMath::currentUSecsSinceEpoch();
