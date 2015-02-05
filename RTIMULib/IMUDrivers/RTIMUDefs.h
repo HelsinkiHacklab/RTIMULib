@@ -557,6 +557,85 @@
 
 //----------------------------------------------------------
 //
+//  LSM303DLM
+
+#define LSM303DLM_ACCEL_ADDRESS    0x19
+#define LSM303DLM_COMPASS_ADDRESS  0x1e
+
+//  LSM303DLM Accel Register Map
+
+#define LSM303DLM_CTRL1_A         0x20
+#define LSM303DLM_CTRL2_A         0x21
+#define LSM303DLM_CTRL3_A         0x22
+#define LSM303DLM_CTRL4_A         0x23
+#define LSM303DLM_CTRL5_A         0x24
+#define LSM303DLM_CTRL6_A         0x25
+#define LSM303DLM_REF_A           0x26
+#define LSM303DLM_STATUS_A        0x27
+#define LSM303DLM_OUT_X_L_A       0x28
+#define LSM303DLM_OUT_X_H_A       0x29
+#define LSM303DLM_OUT_Y_L_A       0x2a
+#define LSM303DLM_OUT_Y_H_A       0x2b
+#define LSM303DLM_OUT_Z_L_A       0x2c
+#define LSM303DLM_OUT_Z_H_A       0x2d
+#define LSM303DLM_FIFO_CTRL_A     0x2e
+#define LSM303DLM_FIFO_SRC_A      0x2f
+
+//  LSM303DLM Compass Register Map
+
+#define LSM303DLM_CRA_M            0x00
+#define LSM303DLM_CRB_M            0x01
+#define LSM303DLM_CRM_M            0x02
+#define LSM303DLM_OUT_X_H_M        0x03
+#define LSM303DLM_OUT_X_L_M        0x04
+#define LSM303DLM_OUT_Y_H_M        0x05
+#define LSM303DLM_OUT_Y_L_M        0x06
+#define LSM303DLM_OUT_Z_H_M        0x07
+#define LSM303DLM_OUT_Z_L_M        0x08
+#define LSM303DLM_STATUS_M         0x09
+#define LSM303DLM_TEMP_OUT_L_M     0x31
+#define LSM303DLM_TEMP_OUT_H_M     0x32
+
+//  Accel sample rate defines
+
+#define LSM303DLM_ACCEL_SAMPLERATE_1       1
+#define LSM303DLM_ACCEL_SAMPLERATE_10      2
+#define LSM303DLM_ACCEL_SAMPLERATE_25      3
+#define LSM303DLM_ACCEL_SAMPLERATE_50      4
+#define LSM303DLM_ACCEL_SAMPLERATE_100     5
+#define LSM303DLM_ACCEL_SAMPLERATE_200     6
+#define LSM303DLM_ACCEL_SAMPLERATE_400     7
+
+//  Accel FSR
+
+#define LSM303DLM_ACCEL_FSR_2     0
+#define LSM303DLM_ACCEL_FSR_4     1
+#define LSM303DLM_ACCEL_FSR_8     2
+#define LSM303DLM_ACCEL_FSR_16    3
+
+//  Compass sample rate defines
+
+#define LSM303DLM_COMPASS_SAMPLERATE_0_75      0
+#define LSM303DLM_COMPASS_SAMPLERATE_1_5       1
+#define LSM303DLM_COMPASS_SAMPLERATE_3         2
+#define LSM303DLM_COMPASS_SAMPLERATE_7_5       3
+#define LSM303DLM_COMPASS_SAMPLERATE_15        4
+#define LSM303DLM_COMPASS_SAMPLERATE_30        5
+#define LSM303DLM_COMPASS_SAMPLERATE_75        6
+#define LSM303DLM_COMPASS_SAMPLERATE_220       7
+
+//  Compass FSR
+
+#define LSM303DLM_COMPASS_FSR_1_3      1
+#define LSM303DLM_COMPASS_FSR_1_9      2
+#define LSM303DLM_COMPASS_FSR_2_5      3
+#define LSM303DLM_COMPASS_FSR_4        4
+#define LSM303DLM_COMPASS_FSR_4_7      5
+#define LSM303DLM_COMPASS_FSR_5_6      6
+#define LSM303DLM_COMPASS_FSR_8_1      7
+
+//----------------------------------------------------------
+//
 //  LSM303DLHC
 
 #define LSM303DLHC_ACCEL_ADDRESS    0x19
