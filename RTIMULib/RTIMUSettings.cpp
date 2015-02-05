@@ -221,6 +221,52 @@ bool RTIMUSettings::discoverIMU(int& imuType, bool& busIsI2C, unsigned char& sla
                 return true;
             }
         }
+
+        if(HALRead(L3G4200D_ADDRESS0, L3G4200D_WHO_AM_I, 1, &result, "")){
+            if(result == L3G4200D_ID) {
+                if (HALRead(LSM303DLM_ACCEL_ADDRESS0, LSM303DLM_STATUS_A, 1, &altResult, "")) {
+                    if (altResult == LSM303DLM_ID) {
+                        imuType = RTIMU_TYPE_G4200DM303DLM;
+                        slaveAddress = L3G4200D_ADDRESS0;
+                        busIsI2C = true;
+                        HAL_INFO("Detected L3G4200D/LSM303DLM at standard/standard address\n");
+                        return true;
+                    }
+                }
+                else if (HALRead(LSM303DLM_ACCEL_ADDRESS1, LSM303DLM_STATUS_A, 1, &altResult, "")) {
+                    if (altResult == LSM303DLM_ID) {
+                        imuType = RTIMU_TYPE_G4200DM303DLM;
+                        slaveAddress = L3G4200D_ADDRESS0;
+                        busIsI2C = true;
+                        HAL_INFO("Detected L3G4200D/LSM303DLM at standard/option address\n");
+                        return true;
+                    }
+                }
+			}
+		}
+
+        if(HALRead(L3G4200D_ADDRESS1, L3G4200D_WHO_AM_I, 1, &result, "")){
+            if(result == L3G4200D_ID) {
+                if (HALRead(LSM303DLM_ACCEL_ADDRESS0, LSM303DLM_STATUS_A, 1, &altResult, "")) {
+                    if (altResult == LSM303DLM_ID) {
+                        imuType = RTIMU_TYPE_G4200DM303DLM;
+                        slaveAddress = L3G4200D_ADDRESS1;
+                        busIsI2C = true;
+                        HAL_INFO("Detected L3G4200D/LSM303DLM at option/standard address\n");
+                        return true;
+                    }
+                }
+                else if (HALRead(LSM303DLM_ACCEL_ADDRESS1, LSM303DLM_STATUS_A, 1, &altResult, "")) {
+                    if (altResult == LSM303DLM_ID) {
+                        imuType = RTIMU_TYPE_G4200DM303DLM;
+                        slaveAddress = L3G4200D_ADDRESS1;
+                        busIsI2C = true;
+                        HAL_INFO("Detected L3G4200D/LSM303DLM at option/option address\n");
+                        return true;
+                    }
+                }
+			}
+		}
         HALClose();
     }
 
@@ -387,6 +433,19 @@ void RTIMUSettings::setDefaults()
 
     m_GD20HM303DLHCCompassSampleRate = LSM303DLHC_COMPASS_SAMPLERATE_30;
     m_GD20HM303DLHCCompassFsr = LSM303DLHC_COMPASS_FSR_1_3;
+
+   //  G4200DM303DLM defaults
+
+    m_G4200DM303DLMGyroSampleRate = L3G4200D_SAMPLERATE_100;
+    m_G4200DM303DLMGyroBW = L3G4200D_BANDWIDTH_1;
+    m_G4200DM303DLMGyroHpf = L3G4200D_HPF_4;
+    m_G4200DM303DLMGyroFsr = L3G4200D_FSR_500;
+
+    m_G4200DM303DLMAccelSampleRate = LSM303DLM_ACCEL_SAMPLERATE_74;
+    m_G4200DM303DLMAccelFsr = LSM303DLM_ACCEL_FSR_8;
+
+    m_G4200DM303DLMCompassSampleRate = LSM303DLM_COMPASS_SAMPLERATE_30;
+    m_G4200DM303DLMCompassFsr = LSM303DLM_COMPASS_FSR_1_3;
 
     //  LSM9DS0 defaults
 

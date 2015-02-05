@@ -38,7 +38,7 @@
 #define RTIMU_TYPE_LSM9DS0                  5                   // STM LSM9DS0 (eg Sparkfun IMU)
 #define RTIMU_TYPE_MPU9250                  6                   // InvenSense MPU9250
 #define RTIMU_TYPE_GD20HM303DLHC            7                   // STM L3GD20H/LSM303DHLC (new Adafruit IMU)
-#define RTIMU_TYPE_RTIMUG4200DM303DLM       8                   // STM L3G4200D/LSM303DLM (Pololu old MinIMU-9)
+#define RTIMU_TYPE_G4200DM303DLM            8                   // STM L3G4200D/LSM303DLM (Pololu old MinIMU-9)
 
 //----------------------------------------------------------
 //
