@@ -560,8 +560,8 @@
 //  LSM303DLM
 
 #define LSM303DLM_ID               0x60
-#define LSM303DLM_ACCEL_ADDRESS0   0x30 //0x18, without RW bit?
-#define LSM303DLM_ACCEL_ADDRESS1   0x32 //0x19 ?
+#define LSM303DLM_ACCEL_ADDRESS0   0x18 //0x30, without including RW bit?
+#define LSM303DLM_ACCEL_ADDRESS1   0x19 //0x32
 #define LSM303DLM_COMPASS_ADDRESS  0x1e //0x3C
 
 //  LSM303DLM Accel Register Map
@@ -580,8 +580,6 @@
 #define LSM303DLM_OUT_Y_H_A         0x2b
 #define LSM303DLM_OUT_Z_L_A         0x2c
 #define LSM303DLM_OUT_Z_H_A         0x2d
-//#define LSM303DLM_FIFO_CTRL_A       0x2e
-//#define LSM303DLM_FIFO_SRC_A        0x2f
 
 //  LSM303DLM Compass Register Map
 
@@ -595,8 +593,6 @@
 #define LSM303DLM_OUT_Z_H_M        0x07
 #define LSM303DLM_OUT_Z_L_M        0x08
 #define LSM303DLM_STATUS_M         0x09
-//#define LSM303DLM_TEMP_OUT_L_M     0x31
-//#define LSM303DLM_TEMP_OUT_H_M     0x32
 #define LSM303DLM_WHO_AM_I         0x0f
 
 //  Accel sample rate defines
