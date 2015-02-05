@@ -80,10 +80,6 @@ bool RTIMUG4200DM303DLM::IMUInit()
 
     //  Set up the gyro
 
-	//does not apply to L3G2400D
-    //if (!m_settings->HALWrite(m_gyroSlaveAddr, L3GD20H_LOW_ODR, 0x04, "Failed to reset L3GD20H"))
-    //    return false;
-
     if (!m_settings->HALWrite(m_gyroSlaveAddr, L3G4200D_CTRL5, 0x80, "Failed to boot L3G4200D"))
         return false;
 
@@ -197,10 +193,6 @@ bool RTIMUG4200DM303DLM::setGyroSampleRate()
         break;
 
     }
-
-	//does not apply for L3G4200D
-    //if (!m_settings->HALWrite(m_gyroSlaveAddr, L3GD20H_LOW_ODR, lowOdr, "Failed to set L3G4200D LOW_ODR"))
-    //    return false;
 
     return (m_settings->HALWrite(m_gyroSlaveAddr, L3G4200D_CTRL1, ctrl1, "Failed to set L3G4200D CTRL1"));
 }

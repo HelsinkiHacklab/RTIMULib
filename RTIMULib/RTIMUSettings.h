@@ -102,6 +102,18 @@
 #define RTIMULIB_GD20HM303DLHC_COMPASS_SAMPLERATE "GD20HM303DLHCCompassSampleRate"
 #define RTIMULIB_GD20HM303DLHC_COMPASS_FSR      "GD20HM303DLHCCompassFsr"
 
+//  G4200DM303DLM settings keys
+
+#define RTIMULIB_G4200DM303DLM_GYRO_SAMPLERATE  "G4200DM303DLMGyroSampleRate"
+#define RTIMULIB_G4200DM303DLM_GYRO_BW          "G4200DM303DLMGyroBW"
+#define RTIMULIB_G4200DM303DLM_GYRO_HPF         "G4200DM303DLMGyroHpf"
+#define RTIMULIB_G4200DM303DLM_GYRO_FSR         "G4200DM303DLMGyroFsr"
+
+#define RTIMULIB_G4200DM303DLM_ACCEL_SAMPLERATE "G4200DM303DLMAccelSampleRate"
+#define RTIMULIB_G4200DM303DLM_ACCEL_FSR        "G4200DM303DLMAccelFsr"
+
+#define RTIMULIB_G4200DM303DLM_COMPASS_SAMPLERATE "G4200DM303DLMCompassSampleRate"
+#define RTIMULIB_G4200DM303DLM_COMPASS_FSR      "G4200DM303DLMCompassFsr"
 
 //  LSM9DS0 settings keys
 
@@ -275,6 +287,20 @@ public:
 
     int m_GD20HM303DLHCCompassSampleRate;                   // the compass sample rate
     int m_GD20HM303DLHCCompassFsr;                          // the compass full scale range
+
+    //  G4200DM303DLM
+
+    int m_G4200DM303DLMGyroSampleRate;                      // the gyro sample rate
+    int m_G4200DM303DLMGyroBW;                              // the gyro bandwidth code
+    int m_G4200DM303DLMGyroHpf;                             // the gyro high pass filter cutoff code
+    int m_G4200DM303DLMGyroFsr;                             // the gyro full scale range
+
+    int m_G4200DM303DLMAccelSampleRate;                     // the accel sample rate
+    int m_G4200DM303DLMAccelFsr;                            // the accel full scale range
+
+    int m_G4200DM303DLMCompassSampleRate;                   // the compass sample rate
+    int m_G4200DM303DLMCompassFsr;                          // the compass full scale range
+
 
     //  LSM9DS0
 
