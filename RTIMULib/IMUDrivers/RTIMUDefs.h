@@ -559,27 +559,29 @@
 //
 //  LSM303DLM
 
-#define LSM303DLM_ACCEL_ADDRESS    0x19
-#define LSM303DLM_COMPASS_ADDRESS  0x1e
+#define LSM303DLM_ID               0x60
+#define LSM303DLM_ACCEL_ADDRESS0   0x30 //0x18, without RW bit?
+#define LSM303DLM_ACCEL_ADDRESS1   0x32 //0x19 ?
+#define LSM303DLM_COMPASS_ADDRESS  0x1e //0x3C
 
 //  LSM303DLM Accel Register Map
 
-#define LSM303DLM_CTRL1_A         0x20
-#define LSM303DLM_CTRL2_A         0x21
-#define LSM303DLM_CTRL3_A         0x22
-#define LSM303DLM_CTRL4_A         0x23
-#define LSM303DLM_CTRL5_A         0x24
-#define LSM303DLM_CTRL6_A         0x25
-#define LSM303DLM_REF_A           0x26
-#define LSM303DLM_STATUS_A        0x27
-#define LSM303DLM_OUT_X_L_A       0x28
-#define LSM303DLM_OUT_X_H_A       0x29
-#define LSM303DLM_OUT_Y_L_A       0x2a
-#define LSM303DLM_OUT_Y_H_A       0x2b
-#define LSM303DLM_OUT_Z_L_A       0x2c
-#define LSM303DLM_OUT_Z_H_A       0x2d
-#define LSM303DLM_FIFO_CTRL_A     0x2e
-#define LSM303DLM_FIFO_SRC_A      0x2f
+#define LSM303DLM_CTRL1_A           0x20
+#define LSM303DLM_CTRL2_A           0x21
+#define LSM303DLM_CTRL3_A           0x22
+#define LSM303DLM_CTRL4_A           0x23
+#define LSM303DLM_CTRL5_A           0x24
+#define LSM303DLM_HP_FILTER_RESET_A 0x25 //dummy register
+#define LSM303DLM_REF_A             0x26
+#define LSM303DLM_STATUS_A          0x27
+#define LSM303DLM_OUT_X_L_A         0x28
+#define LSM303DLM_OUT_X_H_A         0x29
+#define LSM303DLM_OUT_Y_L_A         0x2a
+#define LSM303DLM_OUT_Y_H_A         0x2b
+#define LSM303DLM_OUT_Z_L_A         0x2c
+#define LSM303DLM_OUT_Z_H_A         0x2d
+//#define LSM303DLM_FIFO_CTRL_A       0x2e
+//#define LSM303DLM_FIFO_SRC_A        0x2f
 
 //  LSM303DLM Compass Register Map
 
@@ -593,25 +595,27 @@
 #define LSM303DLM_OUT_Z_H_M        0x07
 #define LSM303DLM_OUT_Z_L_M        0x08
 #define LSM303DLM_STATUS_M         0x09
-#define LSM303DLM_TEMP_OUT_L_M     0x31
-#define LSM303DLM_TEMP_OUT_H_M     0x32
+//#define LSM303DLM_TEMP_OUT_L_M     0x31
+//#define LSM303DLM_TEMP_OUT_H_M     0x32
+#define LSM303DLM_WHO_AM_I         0x0f
 
 //  Accel sample rate defines
 
-#define LSM303DLM_ACCEL_SAMPLERATE_1       1
-#define LSM303DLM_ACCEL_SAMPLERATE_10      2
-#define LSM303DLM_ACCEL_SAMPLERATE_25      3
-#define LSM303DLM_ACCEL_SAMPLERATE_50      4
-#define LSM303DLM_ACCEL_SAMPLERATE_100     5
-#define LSM303DLM_ACCEL_SAMPLERATE_200     6
-#define LSM303DLM_ACCEL_SAMPLERATE_400     7
+#define LSM303DLM_ACCEL_SAMPLERATE_0_5     8  //low-power mode 
+#define LSM303DLM_ACCEL_SAMPLERATE_1       12 //
+#define LSM303DLM_ACCEL_SAMPLERATE_2       16 //
+#define LSM303DLM_ACCEL_SAMPLERATE_5       20 //
+#define LSM303DLM_ACCEL_SAMPLERATE_10      24 //
+#define LSM303DLM_ACCEL_SAMPLERATE_37      4
+#define LSM303DLM_ACCEL_SAMPLERATE_74      5
+#define LSM303DLM_ACCEL_SAMPLERATE_292     6
+#define LSM303DLM_ACCEL_SAMPLERATE_780     7
 
 //  Accel FSR
 
-#define LSM303DLM_ACCEL_FSR_2     0
-#define LSM303DLM_ACCEL_FSR_4     1
-#define LSM303DLM_ACCEL_FSR_8     2
-#define LSM303DLM_ACCEL_FSR_16    3
+#define LSM303DLM_ACCEL_FSR_2    0
+#define LSM303DLM_ACCEL_FSR_4    1
+#define LSM303DLM_ACCEL_FSR_8    2
 
 //  Compass sample rate defines
 

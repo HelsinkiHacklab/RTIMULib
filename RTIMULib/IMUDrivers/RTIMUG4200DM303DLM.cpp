@@ -63,12 +63,12 @@ bool RTIMUG4200DM303DLM::IMUInit()
 
     // work out accel/mag address
 
-    if (m_settings->HALRead(LSM303D_ADDRESS0, LSM303D_WHO_AM_I, 1, &result, "")) {
-        if (result == LSM303D_ID) {
-            m_accelCompassSlaveAddr = LSM303D_ADDRESS0;
+    if (m_settings->HALRead(LSM303DLM_ADDRESS0, LSM303DLM_WHO_AM_I, 1, &result, "")) {
+        if (result == LSM303DLM_ID) {
+            m_accelCompassSlaveAddr = LSM303DLM_ADDRESS0;
         }
     } else {
-        m_accelCompassSlaveAddr = LSM303D_ADDRESS1;
+        m_accelCompassSlaveAddr = LSM303DLM_ADDRESS1;
     }
 
     setCalibrationData();
@@ -100,29 +100,23 @@ bool RTIMUG4200DM303DLM::IMUInit()
     if (!setGyroCTRL4())
             return false;
 
-    //  Set up the accel/compass
-
-    if (!m_settings->HALRead(m_accelCompassSlaveAddr, LSM303D_WHO_AM_I, 1, &result, "Failed to read LSM303D id"))
-        return false;
-
-    if (result != LSM303D_ID) {
-        HAL_ERROR1("Incorrect LSM303D id %d\n", result);
-        return false;
-    }
+    //  Set up the accel
 
     if (!setAccelCTRL1())
         return false;
 
-    if (!setAccelCTRL2())
+    if (!setAccelCTRL4())
         return false;
 
-    if (!setCompassCTRL5())
+    //  Set up the compass
+
+    if (!setCompassCRA())
         return false;
 
-    if (!setCompassCTRL6())
+    if (!setCompassCRB())
         return false;
 
-    if (!setCompassCTRL7())
+    if (!setCompassCRM())
         return false;
 
 #ifdef G4200DM303DLM_CACHE_MODE
@@ -257,117 +251,122 @@ bool RTIMUG4200DM303DLM::setAccelCTRL1()
 {
     unsigned char ctrl1;
 
-    if ((m_settings->m_G4200DM303DLMAccelSampleRate < 0) || (m_settings->m_G4200DM303DLMAccelSampleRate > 10)) {
-        HAL_ERROR1("Illegal LSM303D accel sample rate code %d\n", m_settings->m_G4200DM303DLMAccelSampleRate);
+    if (
+		m_settings->m_G4200DM303DLMAccelSampleRate != LSM303DLM_ACCEL_SAMPLERATE_0_5 &&
+		m_settings->m_G4200DM303DLMAccelSampleRate != LSM303DLM_ACCEL_SAMPLERATE_1   &&
+		m_settings->m_G4200DM303DLMAccelSampleRate != LSM303DLM_ACCEL_SAMPLERATE_2   &&
+		m_settings->m_G4200DM303DLMAccelSampleRate != LSM303DLM_ACCEL_SAMPLERATE_5   &&
+		m_settings->m_G4200DM303DLMAccelSampleRate != LSM303DLM_ACCEL_SAMPLERATE_10  &&
+		m_settings->m_G4200DM303DLMAccelSampleRate != LSM303DLM_ACCEL_SAMPLERATE_37  &&
+		m_settings->m_G4200DM303DLMAccelSampleRate != LSM303DLM_ACCEL_SAMPLERATE_74  &&
+		m_settings->m_G4200DM303DLMAccelSampleRate != LSM303DLM_ACCEL_SAMPLERATE_292 &&
+		m_settings->m_G4200DM303DLMAccelSampleRate != LSM303DLM_ACCEL_SAMPLERATE_780
+	){
+        HAL_ERROR1("Illegal LSM303DLM accel sample rate code %d\n", m_settings->m_G4200DM303DLMAccelSampleRate);
         return false;
     }
 
-    ctrl1 = (m_settings->m_G4200DM303DLMAccelSampleRate << 4) | 0x07;
+    ctrl1 = (m_settings->m_G4200DM303DLMAccelSampleRate << 3) | 0x07;
 
-    return m_settings->HALWrite(m_accelCompassSlaveAddr,  LSM303D_CTRL1, ctrl1, "Failed to set LSM303D CTRL1");
+    return m_settings->HALWrite(m_accelCompassSlaveAddr,  LSM303DLM_CTRL1, ctrl1, "Failed to set LSM303DLM CTRL1");
 }
 
-bool RTIMUG4200DM303DLM::setAccelCTRL2()
+bool RTIMUG4200DM303DLM::setAccelCTRL4()
 {
-    unsigned char ctrl2;
-
-    if ((m_settings->m_G4200DM303DLMAccelLpf < 0) || (m_settings->m_G4200DM303DLMAccelLpf > 3)) {
-        HAL_ERROR1("Illegal LSM303D accel low pass fiter code %d\n", m_settings->m_G4200DM303DLMAccelLpf);
-        return false;
-    }
+    unsigned char ctrl4;
 
     switch (m_settings->m_G4200DM303DLMAccelFsr) {
-    case LSM303D_ACCEL_FSR_2:
+    case LSM303DLM_ACCEL_FSR_2:
         m_accelScale = (RTFLOAT)0.000061;
         break;
 
-    case LSM303D_ACCEL_FSR_4:
+    case LSM303DLM_ACCEL_FSR_4:
         m_accelScale = (RTFLOAT)0.000122;
         break;
 
-    case LSM303D_ACCEL_FSR_6:
-        m_accelScale = (RTFLOAT)0.000183;
-        break;
-
-    case LSM303D_ACCEL_FSR_8:
+    case LSM303DLM_ACCEL_FSR_8:
         m_accelScale = (RTFLOAT)0.000244;
         break;
 
-    case LSM303D_ACCEL_FSR_16:
-        m_accelScale = (RTFLOAT)0.000732;
-        break;
-
     default:
-        HAL_ERROR1("Illegal LSM303D accel FSR code %d\n", m_settings->m_G4200DM303DLMAccelFsr);
+        HAL_ERROR1("Illegal LSM303DLM accel FSR code %d\n", m_settings->m_G4200DM303DLMAccelFsr);
         return false;
     }
 
-    ctrl2 = (m_settings->m_G4200DM303DLMAccelLpf << 6) | (m_settings->m_G4200DM303DLMAccelFsr << 3);
+    ctrl4 = (m_settings->m_G4200DM303DLMAccelFsr << 4);
 
-    return m_settings->HALWrite(m_accelCompassSlaveAddr,  LSM303D_CTRL2, ctrl2, "Failed to set LSM303D CTRL2");
+    return m_settings->HALWrite(m_accelCompassSlaveAddr,  LSM303DLM_CTRL2, ctrl4, "Failed to set LSM303DLM CTRL4");
 }
 
-
-bool RTIMUG4200DM303DLM::setCompassCTRL5()
+bool RTIMUG4200DM303DLM::setCompassCRA()
 {
-    unsigned char ctrl5;
+    unsigned char cra;
 
-    if ((m_settings->m_G4200DM303DLMCompassSampleRate < 0) || (m_settings->m_G4200DM303DLMCompassSampleRate > 5)) {
-        HAL_ERROR1("Illegal LSM303D compass sample rate code %d\n", m_settings->m_G4200DM303DLMCompassSampleRate);
+    if ((m_settings->m_G4200DM303DLMCompassSampleRate < 0) || (m_settings->m_G4200DM303DLMCompassSampleRate > 7)) {
+        HAL_ERROR1("Illegal LSM303DLM compass sample rate code %d\n", m_settings->m_G4200DM303DLMCompassSampleRate);
         return false;
     }
 
-    ctrl5 = (m_settings->m_G4200DM303DLMCompassSampleRate << 2);
+    cra = (m_settings->m_G4200DM303DLMCompassSampleRate << 2);
 
-#ifdef G4200DM303DLM_CACHE_MODE
-    //  enable fifo
-
-    ctrl5 |= 0x40;
-#endif
-
-    return m_settings->HALWrite(m_accelCompassSlaveAddr,  LSM303D_CTRL5, ctrl5, "Failed to set LSM303D CTRL5");
+    return m_settings->HALWrite(m_compassSlaveAddr,  LSM303DLM_CRA_M, cra, "Failed to set LSM303DLM CRA_M");
 }
 
-bool RTIMUG4200DM303DLM::setCompassCTRL6()
+bool RTIMUG4200DM303DLM::setCompassCRB()
 {
-    unsigned char ctrl6;
+    unsigned char crb;
 
     //  convert FSR to uT
 
     switch (m_settings->m_G4200DM303DLMCompassFsr) {
-    case LSM303D_COMPASS_FSR_2:
-        ctrl6 = 0;
-        m_compassScale = (RTFLOAT)0.008;
+    case LSM303DLM_COMPASS_FSR_1_3:
+        m_compassScaleXY = (RTFLOAT)100 / (RTFLOAT)1100;
+        m_compassScaleZ = (RTFLOAT)100 / (RTFLOAT)980;
         break;
 
-    case LSM303D_COMPASS_FSR_4:
-        ctrl6 = 0x20;
-        m_compassScale = (RTFLOAT)0.016;
+    case LSM303DLM_COMPASS_FSR_1_9:
+        m_compassScaleXY = (RTFLOAT)100 / (RTFLOAT)855;
+        m_compassScaleZ = (RTFLOAT)100 / (RTFLOAT)760;
+       break;
+
+    case LSM303DLM_COMPASS_FSR_2_5:
+        m_compassScaleXY = (RTFLOAT)100 / (RTFLOAT)670;
+        m_compassScaleZ = (RTFLOAT)100 / (RTFLOAT)600;
         break;
 
-    case LSM303D_COMPASS_FSR_8:
-        ctrl6 = 0x40;
-        m_compassScale = (RTFLOAT)0.032;
+    case LSM303DLM_COMPASS_FSR_4:
+        m_compassScaleXY = (RTFLOAT)100 / (RTFLOAT)450;
+        m_compassScaleZ = (RTFLOAT)100 / (RTFLOAT)400;
         break;
 
-    case LSM303D_COMPASS_FSR_12:
-        ctrl6 = 0x60;
-        m_compassScale = (RTFLOAT)0.0479;
+    case LSM303DLM_COMPASS_FSR_4_7:
+        m_compassScaleXY = (RTFLOAT)100 / (RTFLOAT)400;
+        m_compassScaleZ = (RTFLOAT)100 / (RTFLOAT)355;
+        break;
+
+    case LSM303DLM_COMPASS_FSR_5_6:
+        m_compassScaleXY = (RTFLOAT)100 / (RTFLOAT)330;
+        m_compassScaleZ = (RTFLOAT)100 / (RTFLOAT)295;
+        break;
+
+    case LSM303DLM_COMPASS_FSR_8_1:
+        m_compassScaleXY = (RTFLOAT)100 / (RTFLOAT)230;
+        m_compassScaleZ = (RTFLOAT)100 / (RTFLOAT)205;
         break;
 
     default:
-        HAL_ERROR1("Illegal LSM303D compass FSR code %d\n", m_settings->m_G4200DM303DLMCompassFsr);
+        HAL_ERROR1("Illegal LSM303DLM compass FSR code %d\n", m_settings->m_G4200DM303DLMCompassFsr);
         return false;
     }
 
-    return m_settings->HALWrite(m_accelCompassSlaveAddr,  LSM303D_CTRL6, ctrl6, "Failed to set LSM303D CTRL6");
+	crb = (m_settings->m_GD20M303DLMCompassFsr << 5);
+    return m_settings->HALWrite(m_compassSlaveAddr,  LSM303DLM_CRB_M, crb, "Failed to set LSM303DLM CRB_M");
 }
 
-bool RTIMUG4200DM303DLM::setCompassCTRL7()
+bool RTIMUG4200DM303DLM::setCompassCRM()
 {
-     return m_settings->HALWrite(m_accelCompassSlaveAddr,  LSM303D_CTRL7, 0x60, "Failed to set LSM303D CTRL7");
+     return m_settings->HALWrite(m_compassSlaveAddr,  LSM303DLM_CRM_M, 0x00, "Failed to set LSM303DLM CRM_M");
 }
-
 
 int RTIMUG4200DM303DLM::IMUGetPollInterval()
 {
@@ -415,10 +414,10 @@ bool RTIMUG4200DM303DLM::IMURead()
         if (!m_settings->HALRead(m_gyroSlaveAddr, 0x80 | L3G4200D_OUT_X_L, 6, gyroData, "Failed to read L3G4200D data"))
             return false;
 
-        if (!m_settings->HALRead(m_accelCompassSlaveAddr, 0x80 | LSM303D_OUT_X_L_A, 6, accelData, "Failed to read LSM303D accel data"))
+        if (!m_settings->HALRead(m_accelCompassSlaveAddr, 0x80 | LSM303DLM_OUT_X_L_A, 6, accelData, "Failed to read LSM303DLM accel data"))
             return false;
 
-        if (!m_settings->HALRead(m_accelCompassSlaveAddr, 0x80 | LSM303D_OUT_X_L_M, 6, compassData, "Failed to read LSM303D compass data"))
+        if (!m_settings->HALRead(m_accelCompassSlaveAddr, 0x80 | LSM303DLM_OUT_X_L_M, 6, compassData, "Failed to read LSM303DLM compass data"))
             return false;
 
         if (m_firstTime)
@@ -443,12 +442,12 @@ bool RTIMUG4200DM303DLM::IMURead()
                          m_cache[m_cacheIn].data, "Failed to read L3G4200D fifo data"))
                 return false;
 
-            if (!m_settings->HALRead(m_accelCompassSlaveAddr, 0x80 | LSM303D_OUT_X_L_A, 6,
-                         m_cache[m_cacheIn].accel, "Failed to read LSM303D accel data"))
+            if (!m_settings->HALRead(m_accelCompassSlaveAddr, 0x80 | LSM303DLM_OUT_X_L_A, 6,
+                         m_cache[m_cacheIn].accel, "Failed to read LSM303DLM accel data"))
                 return false;
 
-            if (!m_settings->HALRead(m_accelCompassSlaveAddr, 0x80 | LSM303D_OUT_X_L_M, 6,
-                         m_cache[m_cacheIn].compass, "Failed to read LSM303D compass data"))
+            if (!m_settings->HALRead(m_accelCompassSlaveAddr, 0x80 | LSM303DLM_OUT_X_L_M, 6,
+                         m_cache[m_cacheIn].compass, "Failed to read LSM303DLM compass data"))
                 return false;
 
             m_cache[m_cacheIn].count = G4200DM303DLM_FIFO_THRESH;
@@ -498,10 +497,10 @@ bool RTIMUG4200DM303DLM::IMURead()
 
     m_imuData.timestamp = RTMath::currentUSecsSinceEpoch();
 
-    if (!m_settings->HALRead(m_accelCompassSlaveAddr, 0x80 | LSM303D_OUT_X_L_A, 6, accelData, "Failed to read LSM303D accel data"))
+    if (!m_settings->HALRead(m_accelCompassSlaveAddr, 0x80 | LSM303DLM_OUT_X_L_A, 6, accelData, "Failed to read LSM303DLM accel data"))
         return false;
 
-    if (!m_settings->HALRead(m_accelCompassSlaveAddr, 0x80 | LSM303D_OUT_X_L_M, 6, compassData, "Failed to read LSM303D compass data"))
+    if (!m_settings->HALRead(m_accelCompassSlaveAddr, 0x80 | LSM303DLM_OUT_X_L_M, 6, compassData, "Failed to read LSM303DLM compass data"))
         return false;
 
 #endif
