@@ -781,6 +781,7 @@ bool RTIMUSettings::saveSettings()
     setComment("  5 = STM LSM9DS0");
     setComment("  6 = InvenSense MPU-9250");
     setComment("  7 = STM L3GD20H + LSM303DLHC");
+    setComment("  8 = STM L3G4200D + LSM303DLM");
     setValue(RTIMULIB_IMU_TYPE, m_imuType);
 
     setBlank();
