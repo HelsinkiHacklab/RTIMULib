@@ -26,6 +26,7 @@
 #define	_RTIMUG4200DM303DLM_H
 
 #include "RTIMU.h"
+#include "RTIMUDefs.h"
 
 //  Define this symbol to use cache mode
 
@@ -58,7 +59,7 @@ public:
     ~RTIMUG4200DM303DLM();
 
     virtual const char *IMUName() { return "L3G4200D + LSM303DLM"; }
-    virtual int IMUType() { return RTIMU_TYPE_RTIMUG4200DM303DLM; }
+    virtual int IMUType() { return RTIMU_TYPE_G4200DM303DLM; }
     virtual bool IMUInit();
     virtual int IMUGetPollInterval();
     virtual bool IMURead();
@@ -69,17 +70,19 @@ private:
     bool setGyroCTRL4();
     bool setGyroCTRL5();
     bool setAccelCTRL1();
-    bool setAccelCTRL2();
-    bool setCompassCTRL5();
-    bool setCompassCTRL6();
-    bool setCompassCTRL7();
+    bool setAccelCTRL4();
+    bool setCompassCRA();
+    bool setCompassCRB();
+    bool setCompassCRM();
 
     unsigned char m_gyroSlaveAddr;                          // I2C address of L3GD20H
-    unsigned char m_accelCompassSlaveAddr;                  // I2C address of LSM303D
+    unsigned char m_accelSlaveAddr;                          // I2C address of LSM303DLM accelerometer
+    unsigned char m_compassSlaveAddr;                       // I2C address of LSM303DLM compass
 
     RTFLOAT m_gyroScale;
     RTFLOAT m_accelScale;
-    RTFLOAT m_compassScale;
+    RTFLOAT m_compassScaleXY;
+    RTFLOAT m_compassScaleZ;
 
 #ifdef G4200DM303DLM_CACHE_MODE
     bool m_firstTime;                                       // if first sample

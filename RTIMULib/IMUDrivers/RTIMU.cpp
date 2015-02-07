@@ -31,6 +31,7 @@
 #include "RTIMUMPU9250.h"
 #include "RTIMUGD20HM303D.h"
 #include "RTIMUGD20M303DLHC.h"
+#include "RTIMUG4200DM303DLM.h"
 #include "RTIMUGD20HM303DLHC.h"
 #include "RTIMULSM9DS0.h"
 
@@ -91,6 +92,9 @@ RTIMU *RTIMU::createIMU(RTIMUSettings *settings)
 
     case RTIMU_TYPE_GD20M303DLHC:
         return new RTIMUGD20M303DLHC(settings);
+
+    case RTIMU_TYPE_G4200DM303DLM:
+        return new RTIMUG4200DM303DLM(settings);
 
     case RTIMU_TYPE_LSM9DS0:
         return new RTIMULSM9DS0(settings);

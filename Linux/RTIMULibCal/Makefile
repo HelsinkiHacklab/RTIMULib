@@ -71,6 +71,7 @@ DEPS    = $(RTIMULIBPATH)/RTMath.h \
     $(RTIMULIBPATH)/IMUDrivers/RTIMUMPU9250.h \
     $(RTIMULIBPATH)/IMUDrivers/RTIMUGD20HM303D.h \
     $(RTIMULIBPATH)/IMUDrivers/RTIMUGD20M303DLHC.h \
+    $(RTIMULIBPATH)/IMUDrivers/RTIMUG4200DM303DLM.h \
     $(RTIMULIBPATH)/IMUDrivers/RTIMUGD20HM303DLHC.h \
     $(RTIMULIBPATH)/IMUDrivers/RTIMULSM9DS0.h \
     $(RTIMULIBPATH)/IMUDrivers/RTPressure.h \
@@ -92,6 +93,7 @@ OBJECTS = objects/RTIMULibCal.o \
     objects/RTIMUMPU9250.o \
     objects/RTIMUGD20HM303D.o \
     objects/RTIMUGD20M303DLHC.o \
+    objects/RTIMUG4200DM303DLM.o \
     objects/RTIMUGD20HM303DLHC.o \
     objects/RTIMULSM9DS0.o \
     objects/RTPressure.o \

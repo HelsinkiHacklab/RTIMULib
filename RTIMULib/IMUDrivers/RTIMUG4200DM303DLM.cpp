@@ -60,15 +60,16 @@ bool RTIMUG4200DM303DLM::IMUInit()
     //  configure IMU
 
     m_gyroSlaveAddr = m_settings->m_I2CSlaveAddress;
+    m_compassSlaveAddr = LSM303DLM_COMPASS_ADDRESS;
 
-    // work out accel/mag address
+    // work out accelerometer address
 
-    if (m_settings->HALRead(LSM303DLM_ADDRESS0, LSM303DLM_WHO_AM_I, 1, &result, "")) {
+    if (m_settings->HALRead(LSM303DLM_ACCEL_ADDRESS0, LSM303DLM_WHO_AM_I, 1, &result, "")) {
         if (result == LSM303DLM_ID) {
-            m_accelCompassSlaveAddr = LSM303DLM_ADDRESS0;
+            m_accelSlaveAddr = LSM303DLM_ACCEL_ADDRESS0;
         }
     } else {
-        m_accelCompassSlaveAddr = LSM303DLM_ADDRESS1;
+        m_accelSlaveAddr = LSM303DLM_ACCEL_ADDRESS1;
     }
 
     setCalibrationData();
@@ -139,7 +140,6 @@ bool RTIMUG4200DM303DLM::IMUInit()
 bool RTIMUG4200DM303DLM::setGyroSampleRate()
 {
     unsigned char ctrl1;
-    unsigned char lowOdr = 0;
 
     switch (m_settings->m_G4200DM303DLMGyroSampleRate) {
     case L3G4200D_SAMPLERATE_100:
@@ -268,7 +268,7 @@ bool RTIMUG4200DM303DLM::setAccelCTRL1()
 
     ctrl1 = (m_settings->m_G4200DM303DLMAccelSampleRate << 3) | 0x07;
 
-    return m_settings->HALWrite(m_accelCompassSlaveAddr,  LSM303DLM_CTRL1, ctrl1, "Failed to set LSM303DLM CTRL1");
+    return m_settings->HALWrite(m_accelSlaveAddr,  LSM303DLM_CTRL1_A, ctrl1, "Failed to set LSM303DLM CTRL1");
 }
 
 bool RTIMUG4200DM303DLM::setAccelCTRL4()
@@ -295,7 +295,7 @@ bool RTIMUG4200DM303DLM::setAccelCTRL4()
 
     ctrl4 = (m_settings->m_G4200DM303DLMAccelFsr << 4);
 
-    return m_settings->HALWrite(m_accelCompassSlaveAddr,  LSM303DLM_CTRL2, ctrl4, "Failed to set LSM303DLM CTRL4");
+    return m_settings->HALWrite(m_accelSlaveAddr,  LSM303DLM_CTRL4_A, ctrl4, "Failed to set LSM303DLM CTRL4");
 }
 
 bool RTIMUG4200DM303DLM::setCompassCRA()
@@ -359,7 +359,7 @@ bool RTIMUG4200DM303DLM::setCompassCRB()
         return false;
     }
 
-	crb = (m_settings->m_GD20M303DLMCompassFsr << 5);
+	crb = (m_settings->m_G4200DM303DLMCompassFsr << 5);
     return m_settings->HALWrite(m_compassSlaveAddr,  LSM303DLM_CRB_M, crb, "Failed to set LSM303DLM CRB_M");
 }
 
@@ -414,10 +414,10 @@ bool RTIMUG4200DM303DLM::IMURead()
         if (!m_settings->HALRead(m_gyroSlaveAddr, 0x80 | L3G4200D_OUT_X_L, 6, gyroData, "Failed to read L3G4200D data"))
             return false;
 
-        if (!m_settings->HALRead(m_accelCompassSlaveAddr, 0x80 | LSM303DLM_OUT_X_L_A, 6, accelData, "Failed to read LSM303DLM accel data"))
+        if (!m_settings->HALRead(m_accelSlaveAddr, 0x80 | LSM303DLM_OUT_X_L_A, 6, accelData, "Failed to read LSM303DLM accel data"))
             return false;
 
-        if (!m_settings->HALRead(m_accelCompassSlaveAddr, 0x80 | LSM303DLM_OUT_X_L_M, 6, compassData, "Failed to read LSM303DLM compass data"))
+        if (!m_settings->HALRead(m_compassSlaveAddr, 0x80 | LSM303DLM_OUT_X_L_M, 6, compassData, "Failed to read LSM303DLM compass data"))
             return false;
 
         if (m_firstTime)
@@ -497,19 +497,20 @@ bool RTIMUG4200DM303DLM::IMURead()
 
     m_imuData.timestamp = RTMath::currentUSecsSinceEpoch();
 
-    if (!m_settings->HALRead(m_accelCompassSlaveAddr, 0x80 | LSM303DLM_OUT_X_L_A, 6, accelData, "Failed to read LSM303DLM accel data"))
+    if (!m_settings->HALRead(m_accelSlaveAddr, 0x80 | LSM303DLM_OUT_X_L_A, 6, accelData, "Failed to read LSM303DLM accel data"))
         return false;
 
-    if (!m_settings->HALRead(m_accelCompassSlaveAddr, 0x80 | LSM303DLM_OUT_X_L_M, 6, compassData, "Failed to read LSM303DLM compass data"))
+    if (!m_settings->HALRead(m_compassSlaveAddr, 0x80 | LSM303DLM_OUT_X_L_M, 6, compassData, "Failed to read LSM303DLM compass data"))
         return false;
 
 #endif
 
     RTMath::convertToVector(gyroData, m_imuData.gyro, m_gyroScale, false);
     RTMath::convertToVector(accelData, m_imuData.accel, m_accelScale, false);
-    RTMath::convertToVector(compassData, m_imuData.compass, m_compassScale, false);
 
-    //  sort out gyro axes
+    m_imuData.compass.setX((RTFLOAT)((int16_t)(((uint16_t)compassData[0] << 8) | (uint16_t)compassData[1])) * m_compassScaleXY);
+    m_imuData.compass.setY((RTFLOAT)((int16_t)(((uint16_t)compassData[2] << 8) | (uint16_t)compassData[3])) * m_compassScaleXY);
+    m_imuData.compass.setZ((RTFLOAT)((int16_t)(((uint16_t)compassData[4] << 8) | (uint16_t)compassData[5])) * m_compassScaleZ);
 
     m_imuData.gyro.setX(m_imuData.gyro.x());
     m_imuData.gyro.setY(-m_imuData.gyro.y());
