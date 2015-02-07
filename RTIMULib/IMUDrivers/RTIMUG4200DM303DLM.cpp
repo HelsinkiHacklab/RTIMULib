@@ -65,7 +65,7 @@ bool RTIMUG4200DM303DLM::IMUInit()
     // work out accelerometer address
 
     if (m_settings->HALRead(LSM303DLM_ACCEL_ADDRESS0, LSM303DLM_WHO_AM_I, 1, &result, "")) {
-        if (result == LSM303DLM_ID) {
+        if (result == LSM303DLM_ACCEL_ID) {
             m_accelSlaveAddr = LSM303DLM_ACCEL_ADDRESS0;
         }
     } else {

@@ -224,8 +224,8 @@ bool RTIMUSettings::discoverIMU(int& imuType, bool& busIsI2C, unsigned char& sla
 
         if(HALRead(L3G4200D_ADDRESS0, L3G4200D_WHO_AM_I, 1, &result, "")){
             if(result == L3G4200D_ID) {
-                if (HALRead(LSM303DLM_ACCEL_ADDRESS0, LSM303DLM_STATUS_A, 1, &altResult, "")) {
-                    if (altResult == LSM303DLM_ID) {
+                if (HALRead(LSM303DLM_ACCEL_ADDRESS0, LSM303DLM_WHO_AM_I, 1, &altResult, "")) {
+                    if (altResult == LSM303DLM_ACCEL_ID) {
                         imuType = RTIMU_TYPE_G4200DM303DLM;
                         slaveAddress = L3G4200D_ADDRESS0;
                         busIsI2C = true;
@@ -233,8 +233,8 @@ bool RTIMUSettings::discoverIMU(int& imuType, bool& busIsI2C, unsigned char& sla
                         return true;
                     }
                 }
-                else if (HALRead(LSM303DLM_ACCEL_ADDRESS1, LSM303DLM_STATUS_A, 1, &altResult, "")) {
-                    if (altResult == LSM303DLM_ID) {
+                else if (HALRead(LSM303DLM_ACCEL_ADDRESS1, LSM303DLM_WHO_AM_I, 1, &altResult, "")) {
+                    if (altResult == LSM303DLM_ACCEL_ID) {
                         imuType = RTIMU_TYPE_G4200DM303DLM;
                         slaveAddress = L3G4200D_ADDRESS0;
                         busIsI2C = true;
@@ -247,8 +247,8 @@ bool RTIMUSettings::discoverIMU(int& imuType, bool& busIsI2C, unsigned char& sla
 
         if(HALRead(L3G4200D_ADDRESS1, L3G4200D_WHO_AM_I, 1, &result, "")){
             if(result == L3G4200D_ID) {
-                if (HALRead(LSM303DLM_ACCEL_ADDRESS0, LSM303DLM_STATUS_A, 1, &altResult, "")) {
-                    if (altResult == LSM303DLM_ID) {
+                if (HALRead(LSM303DLM_ACCEL_ADDRESS0, LSM303DLM_WHO_AM_I, 1, &altResult, "")) {
+                    if (altResult == LSM303DLM_ACCEL_ID) {
                         imuType = RTIMU_TYPE_G4200DM303DLM;
                         slaveAddress = L3G4200D_ADDRESS1;
                         busIsI2C = true;
@@ -256,8 +256,8 @@ bool RTIMUSettings::discoverIMU(int& imuType, bool& busIsI2C, unsigned char& sla
                         return true;
                     }
                 }
-                else if (HALRead(LSM303DLM_ACCEL_ADDRESS1, LSM303DLM_STATUS_A, 1, &altResult, "")) {
-                    if (altResult == LSM303DLM_ID) {
+                else if (HALRead(LSM303DLM_ACCEL_ADDRESS1, LSM303DLM_WHO_AM_I, 1, &altResult, "")) {
+                    if (altResult == LSM303DLM_ACCEL_ID) {
                         imuType = RTIMU_TYPE_G4200DM303DLM;
                         slaveAddress = L3G4200D_ADDRESS1;
                         busIsI2C = true;

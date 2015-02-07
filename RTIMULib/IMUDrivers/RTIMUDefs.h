@@ -377,9 +377,9 @@
 
 //  I2C Slave Addresses
 
-#define L3G4200D_ADDRESS0             0x68 //diff from DG20
-#define L3G4200D_ADDRESS1             0x69 //
-#define L3G4200D_ID                   0xd4
+#define L3G4200D_ADDRESS0             0x68
+#define L3G4200D_ADDRESS1             0x69
+#define L3G4200D_ID                   0xd3
 
 //  L3GD20 Register map
 
@@ -559,9 +559,10 @@
 //
 //  LSM303DLM
 
-#define LSM303DLM_ID               0x60
+#define LSM303DLM_ACCEL_ID         0x32
 #define LSM303DLM_ACCEL_ADDRESS0   0x18 //0x30, without including RW bit?
 #define LSM303DLM_ACCEL_ADDRESS1   0x19 //0x32
+#define LSM303DLM_COMPASS_ID       0x3C
 #define LSM303DLM_COMPASS_ADDRESS  0x1e //0x3C
 
 //  LSM303DLM Accel Register Map
