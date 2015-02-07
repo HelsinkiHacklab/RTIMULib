@@ -31,6 +31,7 @@
 #include "IMUDrivers/RTIMUGD20HM303D.h"
 #include "IMUDrivers/RTIMUGD20M303DLHC.h"
 #include "IMUDrivers/RTIMUGD20HM303DLHC.h"
+#include "IMUDrivers/RTIMUG4200DM303DLM.h"
 #include "IMUDrivers/RTIMULSM9DS0.h"
 
 #include "IMUDrivers/RTPressureBMP180.h"
@@ -703,6 +704,25 @@ bool RTIMUSettings::loadSettings()
         } else if (strcmp(key, RTIMULIB_GD20HM303DLHC_COMPASS_FSR) == 0) {
             m_GD20HM303DLHCCompassFsr = atoi(val);
 
+        //  G4200DM303DLM settings
+
+         } else if (strcmp(key, RTIMULIB_G4200DM303DLM_GYRO_SAMPLERATE) == 0) {
+            m_G4200DM303DLMGyroSampleRate = atoi(val);
+        } else if (strcmp(key, RTIMULIB_G4200DM303DLM_GYRO_FSR) == 0) {
+            m_G4200DM303DLMGyroFsr = atoi(val);
+        } else if (strcmp(key, RTIMULIB_G4200DM303DLM_GYRO_HPF) == 0) {
+            m_G4200DM303DLMGyroHpf = atoi(val);
+        } else if (strcmp(key, RTIMULIB_G4200DM303DLM_GYRO_BW) == 0) {
+            m_G4200DM303DLMGyroBW = atoi(val);
+        } else if (strcmp(key, RTIMULIB_G4200DM303DLM_ACCEL_SAMPLERATE) == 0) {
+            m_G4200DM303DLMAccelSampleRate = atoi(val);
+        } else if (strcmp(key, RTIMULIB_G4200DM303DLM_ACCEL_FSR) == 0) {
+            m_G4200DM303DLMAccelFsr = atoi(val);
+        } else if (strcmp(key, RTIMULIB_G4200DM303DLM_COMPASS_SAMPLERATE) == 0) {
+            m_G4200DM303DLMCompassSampleRate = atoi(val);
+        } else if (strcmp(key, RTIMULIB_G4200DM303DLM_COMPASS_FSR) == 0) {
+            m_G4200DM303DLMCompassFsr = atoi(val);
+
         //  LSM9DS0 settings
 
         } else if (strcmp(key, RTIMULIB_LSM9DS0_GYRO_SAMPLERATE) == 0) {
@@ -1253,6 +1273,91 @@ bool RTIMUSettings::saveSettings()
     setComment("  6 = +/- 560 uT ");
     setComment("  7 = +/- 810 uT ");
     setValue(RTIMULIB_GD20HM303DLHC_COMPASS_FSR, m_GD20HM303DLHCCompassFsr);
+
+
+    //  G4200DM303DLM settings
+
+    setBlank();
+    setComment("#####################################################################");
+    setComment("");
+    setComment("L3GD20H + LSM303DLHC settings");
+    setComment("");
+
+    setBlank();
+    setComment("");
+    setComment("Gyro sample rate - ");
+    setComment("  0 = 100Hz ");
+    setComment("  1 = 200Hz ");
+    setComment("  2 = 400Hz ");
+    setComment("  3 = 800Hz ");
+    setValue(RTIMULIB_G4200DM303DLM_GYRO_SAMPLERATE, m_G4200DM303DLMGyroSampleRate);
+
+    setBlank();
+    setComment("");
+    setComment("Gyro full scale range - ");
+    setComment("  0 = 250 degrees per second ");
+    setComment("  1 = 500 degrees per second ");
+    setComment("  2 = 2000 degrees per second ");
+    setValue(RTIMULIB_G4200DM303DLM_GYRO_FSR, m_G4200DM303DLMGyroFsr);
+
+    setBlank();
+    setComment("");
+    setComment("Gyro high pass filter - ");
+    setComment("  0 - 9 but see the L3G4200D manual for details");
+    setValue(RTIMULIB_G4200DM303DLM_GYRO_HPF, m_G4200DM303DLMGyroHpf);
+
+    setBlank();
+    setComment("");
+    setComment("Gyro bandwidth - ");
+    setComment("  0 - 3 but see the L3G4200D manual for details");
+    setValue(RTIMULIB_G4200DM303DLM_GYRO_BW, m_G4200DM303DLMGyroBW);
+
+    setBlank();
+    setComment("Accel sample rate - ");
+    setComment("  8  = 0.5Hz ");
+    setComment("  12 = 1Hz ");
+    setComment("  16 = 2Hz ");
+    setComment("  20 = 5Hz ");
+    setComment("  24 = 10Hz ");
+    setComment("  4  = 37Hz ");
+    setComment("  5  = 74Hz ");
+    setComment("  6  = 292Hz ");
+    setComment("  7  = 780Hz ");
+    setValue(RTIMULIB_G4200DM303DLM_ACCEL_SAMPLERATE, m_G4200DM303DLMAccelSampleRate);
+
+    setBlank();
+    setComment("");
+    setComment("Accel full scale range - ");
+    setComment("  0 = +/- 2g ");
+    setComment("  1 = +/- 4g ");
+    setComment("  2 = +/- 8g ");
+    setValue(RTIMULIB_G4200DM303DLM_ACCEL_FSR, m_G4200DM303DLMAccelFsr);
+
+    setBlank();
+    setComment("");
+    setComment("Compass sample rate - ");
+    setComment("  0 = 0.75Hz ");
+    setComment("  1 = 1.5Hz ");
+    setComment("  2 = 3Hz ");
+    setComment("  3 = 7.5Hz ");
+    setComment("  4 = 15Hz ");
+    setComment("  5 = 30Hz ");
+    setComment("  6 = 75Hz ");
+    setComment("  7 = 220Hz ");
+    setValue(RTIMULIB_G4200DM303DLM_COMPASS_SAMPLERATE, m_G4200DM303DLMCompassSampleRate);
+
+
+    setBlank();
+    setComment("");
+    setComment("Compass full scale range - ");
+    setComment("  1 = +/- 130 uT ");
+    setComment("  2 = +/- 190 uT ");
+    setComment("  3 = +/- 250 uT ");
+    setComment("  4 = +/- 400 uT ");
+    setComment("  5 = +/- 470 uT ");
+    setComment("  6 = +/- 560 uT ");
+    setComment("  7 = +/- 810 uT ");
+    setValue(RTIMULIB_G4200DM303DLM_COMPASS_FSR, m_G4200DM303DLMCompassFsr);
 
     //  LSM9DS0 settings
 
