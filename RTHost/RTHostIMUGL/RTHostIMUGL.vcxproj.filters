@@ -200,6 +200,9 @@
     <ClCompile Include="..\..\RTIMULib\IMUDrivers\RTIMUGD20HM303DLHC.cpp">
       <Filter>RTIMULib\IMUDrivers</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\RTIMULib\IMUDrivers\RTIMUG4200DM303DLM.cpp">
+      <Filter>RTIMULib\IMUDrivers</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\RTIMULib\IMUDrivers\RTIMUGD20M303DLHC.cpp">
       <Filter>RTIMULib\IMUDrivers</Filter>
     </ClCompile>
@@ -325,6 +328,9 @@
       <Filter>RTIMULib\IMUDrivers</Filter>
     </ClInclude>
     <ClInclude Include="..\..\RTIMULib\IMUDrivers\RTIMUGD20HM303DLHC.h">
+      <Filter>RTIMULib\IMUDrivers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\RTIMULib\IMUDrivers\RTIMUG4200DM303DLM.h">
       <Filter>RTIMULib\IMUDrivers</Filter>
     </ClInclude>
     <ClInclude Include="..\..\RTIMULib\IMUDrivers\RTIMUGD20M303DLHC.h">

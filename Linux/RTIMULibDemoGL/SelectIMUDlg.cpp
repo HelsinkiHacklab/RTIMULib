@@ -116,6 +116,7 @@ void SelectIMUDlg::layoutWindow()
     m_selectIMU->addItem("STM LSM9DS0");
     m_selectIMU->addItem("InvenSense MPU9250");
     m_selectIMU->addItem("STM L3GD20H/LSM303DLHC");
+    m_selectIMU->addItem("STM L3G4200D/LSM303DLM");
 
     m_selectIMU->setCurrentIndex(m_settings->m_imuType);
 
@@ -196,6 +197,15 @@ void SelectIMUDlg::setSelectAddress(int imuType, int slaveAddress)
             m_selectAddress->addItem("Standard (0x6a)", L3GD20H_ADDRESS0);
             m_selectAddress->addItem("Option (0x6b)", L3GD20H_ADDRESS1);
             if (slaveAddress == L3GD20H_ADDRESS1)
+                m_selectAddress->setCurrentIndex(1);
+            else
+                m_selectAddress->setCurrentIndex(0);
+            break;
+
+        case RTIMU_TYPE_G4200DM303DLM:
+            m_selectAddress->addItem("Standard (0x68)", L3G4200D_ADDRESS0);
+            m_selectAddress->addItem("Option (0x69)", L3G4200D_ADDRESS1);
+            if (slaveAddress == L3G4200D_ADDRESS1)
                 m_selectAddress->setCurrentIndex(1);
             else
                 m_selectAddress->setCurrentIndex(0);

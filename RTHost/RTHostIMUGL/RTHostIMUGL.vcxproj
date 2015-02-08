@@ -76,6 +76,7 @@
     <ClCompile Include="..\..\RTIMULib\IMUDrivers\RTIMU.cpp" />
     <ClCompile Include="..\..\RTIMULib\IMUDrivers\RTIMUGD20HM303D.cpp" />
     <ClCompile Include="..\..\RTIMULib\IMUDrivers\RTIMUGD20HM303DLHC.cpp" />
+    <ClCompile Include="..\..\RTIMULib\IMUDrivers\RTIMUG4200DM303DLM.cpp" />
     <ClCompile Include="..\..\RTIMULib\IMUDrivers\RTIMUGD20M303DLHC.cpp" />
     <ClCompile Include="..\..\RTIMULib\IMUDrivers\RTIMULSM9DS0.cpp" />
     <ClCompile Include="..\..\RTIMULib\IMUDrivers\RTIMUMPU9150.cpp" />
@@ -209,6 +210,7 @@
     <ClInclude Include="..\..\RTIMULib\IMUDrivers\RTIMUDefs.h" />
     <ClInclude Include="..\..\RTIMULib\IMUDrivers\RTIMUGD20HM303D.h" />
     <ClInclude Include="..\..\RTIMULib\IMUDrivers\RTIMUGD20HM303DLHC.h" />
+    <ClInclude Include="..\..\RTIMULib\IMUDrivers\RTIMUG4200DM303DLM.h" />
     <ClInclude Include="..\..\RTIMULib\IMUDrivers\RTIMUGD20M303DLHC.h" />
     <ClInclude Include="..\..\RTIMULib\IMUDrivers\RTIMULSM9DS0.h" />
     <ClInclude Include="..\..\RTIMULib\IMUDrivers\RTIMUMPU9150.h" />
